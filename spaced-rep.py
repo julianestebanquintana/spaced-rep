@@ -35,8 +35,8 @@ def seleccionar_tarjetas():
     return seleccion_total
 
 def enviar_correo(seleccion):
-    remitente = os.environ.get("EMAIL_USER")
-    destinatario = os.environ.get("EMAIL_USER") # Asumiendo que te lo envías a ti mismo
+    remitente = os.environ.get("EMAIL_REMIT")
+    destinatario = os.environ.get("EMAIL_DESTIN")
     password = os.environ.get("EMAIL_PASS")
     ip_vps = os.environ.get("VPS_IP")
 
