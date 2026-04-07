@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def seleccionar_tarjetas():
-    archivos = glob.glob("*.json")
+    archivos = glob.glob("db/*.json")
     hoy = datetime.now().date()
     seleccion_total = []
 
@@ -78,12 +78,12 @@ def enviar_correo(seleccion):
     except Exception as e:
         print(f"Error al enviar el correo: {e}")
 
-ids_enviados = [t['id'] for tema, tarjetas in tarjetas_del_dia for t in tarjetas]
-    with open('enviadas_hoy.json', 'w') as f: json.dump({"fecha": str(datetime.now().date()), "ids": ids_enviados}, f)
-
 if __name__ == "__main__":
     tarjetas_del_dia = seleccionar_tarjetas()
     if tarjetas_del_dia:
+        ids_enviados = [t['id'] for tema, tarjetas in tarjetas_del_dia for t in tarjetas]
+        with open('enviadas_hoy.json', 'w') as f:
+            json.dump({"fecha": str(datetime.now().date()), "ids": ids_enviados}, f)
         enviar_correo(tarjetas_del_dia)
     else:
         print("No hay tarjetas programadas para repaso hoy.")

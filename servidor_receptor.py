@@ -71,4 +71,4 @@ def finalizar():
 
 if __name__ == '__main__':
     # host='0.0.0.0' permite recibir conexiones externas (necesario en el VPS)
-    app.run(host='0.0.0.0', port=5001)
+    app.run(host='0.0.0.0', port=5000)
