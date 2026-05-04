@@ -2,6 +2,7 @@ import json
 import glob
 import os
 from datetime import datetime, timedelta
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 ARCHIVO_REGISTRO = 'registro_diario.json'
 ARCHIVO_ENVIADAS = 'enviadas_hoy.json'
@@ -17,8 +18,16 @@ def procesar_sesion():
     with open(ARCHIVO_REGISTRO, 'r') as f: registro = json.load(f)
     with open(ARCHIVO_ENVIADAS, 'r') as f: enviadas = json.load(f)
 
-    if registro.get('fecha') != hoy or enviadas.get('fecha') != hoy:
-        print("Los registros no son de hoy. Abortando.")
+    fecha_registro = registro.get('fecha', '')
+    fecha_enviadas = enviadas.get('fecha', '')
+    if not fecha_registro or not fecha_enviadas:
+        print("Archivos de registro incompletos. Abortando.")
+        return
+    # Permite procesar registros de hasta 24 horas atrás
+    from datetime import date
+    dias_diferencia = (date.fromisoformat(hoy) - date.fromisoformat(fecha_registro)).days
+    if dias_diferencia > 1:
+        print(f"Registros demasiado antiguos ({fecha_registro}). Abortando.")
         return
         
     if not registro.get('finalizado') and len(registro.get('errores', [])) == 0:
